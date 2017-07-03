@@ -1,4 +1,4 @@
-package uk.co.seyah.tweetglobebackend.model;
+package uk.co.seyah.tweetglobebackend.jwt;
 
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 

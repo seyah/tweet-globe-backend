@@ -1,14 +1,14 @@
-package uk.co.seyah.tweetglobebackend.model;
+package uk.co.seyah.tweetglobebackend.model.user;
 
 public class Credentials {
-    private String username;
+    private String email;
     private String password;
 
     public Credentials() {
     }
 
-    public String getUsername() {
-        return username;
+    public String getEmail() {
+        return email;
     }
 
     public String getPassword() {

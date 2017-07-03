@@ -1,4 +1,4 @@
-package uk.co.seyah.tweetglobebackend.security;
+package uk.co.seyah.tweetglobebackend.jwt.security;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -6,19 +6,21 @@ import org.springframework.security.authentication.dao.AbstractUserDetailsAuthen
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.AuthorityUtils;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
-import uk.co.seyah.tweetglobebackend.model.JwtAuthenticationToken;
-import uk.co.seyah.tweetglobebackend.model.User;
-import uk.co.seyah.tweetglobebackend.model.dto.JwtUserDto;
-import uk.co.seyah.tweetglobebackend.model.exception.JwtTokenMalformedException;
+import uk.co.seyah.tweetglobebackend.jwt.JwtAuthenticationToken;
+import uk.co.seyah.tweetglobebackend.model.user.User;
+import uk.co.seyah.tweetglobebackend.jwt.JwtUserDto;
+import uk.co.seyah.tweetglobebackend.jwt.exception.JwtTokenMalformedException;
+import uk.co.seyah.tweetglobebackend.service.CustomUserDetailsService;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Component
 public class JwtAuthenticationProvider extends AbstractUserDetailsAuthenticationProvider {
+
+    @Autowired
+    private CustomUserDetailsService customUserDetailsService;
 
     @Autowired
     private JwtTokenValidator jwtTokenValidator;
@@ -33,7 +35,7 @@ public class JwtAuthenticationProvider extends AbstractUserDetailsAuthentication
     }
 
     @Override
-    protected UserDetails retrieveUser(String username, UsernamePasswordAuthenticationToken authentication) throws AuthenticationException {
+    protected User retrieveUser(String username, UsernamePasswordAuthenticationToken authentication) throws AuthenticationException {
         JwtAuthenticationToken jwtAuthenticationToken = (JwtAuthenticationToken) authentication;
         String token = jwtAuthenticationToken.getToken();
 
@@ -45,21 +47,7 @@ public class JwtAuthenticationProvider extends AbstractUserDetailsAuthentication
 
         List<GrantedAuthority> authorityList = AuthorityUtils.commaSeparatedStringToAuthorityList(parsedUser.getRole());
 
-        User user = new User(parsedUser.getUsername(), token, true);
-        org.springframework.security.core.userdetails.User userDetail =
-                new org.springframework.security.core.userdetails.User(user.getEmail(), user.getPassword(), true, true, true, true, getAuthorities(user.getRole()));
-        return userDetail;
-    }
-
-    public List<GrantedAuthority> getAuthorities(Integer role) {
-        List<GrantedAuthority> authList = new ArrayList<>();
-        if (role == 1) {
-            authList.add(new SimpleGrantedAuthority("ROLE_USER"));
-            authList.add(new SimpleGrantedAuthority("ROLE_ADMIN"));
-        } else if (role == 2) {
-            authList.add(new SimpleGrantedAuthority("ROLE_USER"));
-        }
-        return authList;
+        return customUserDetailsService.loadUserByUsername(parsedUser.getUsername());
     }
 
 }

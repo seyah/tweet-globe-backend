@@ -1,4 +1,4 @@
-package uk.co.seyah.tweetglobebackend.model.exception;
+package uk.co.seyah.tweetglobebackend.jwt.exception;
 
 import org.springframework.security.core.AuthenticationException;
 

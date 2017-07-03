@@ -1,4 +1,4 @@
-package uk.co.seyah.tweetglobebackend.model.dto;
+package uk.co.seyah.tweetglobebackend.jwt;
 
 public class JwtUserDto {
 
@@ -7,6 +7,8 @@ public class JwtUserDto {
     private String username;
 
     private String role;
+
+
 
     public Long getId() {
         return id;

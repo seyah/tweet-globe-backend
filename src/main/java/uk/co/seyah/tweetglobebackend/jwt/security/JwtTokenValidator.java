@@ -1,11 +1,11 @@
-package uk.co.seyah.tweetglobebackend.security;
+package uk.co.seyah.tweetglobebackend.jwt.security;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.JwtException;
 import io.jsonwebtoken.Jwts;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
-import uk.co.seyah.tweetglobebackend.model.dto.JwtUserDto;
+import uk.co.seyah.tweetglobebackend.jwt.JwtUserDto;
 
 /**
  * Class validates a given token by using the secret configured in the application

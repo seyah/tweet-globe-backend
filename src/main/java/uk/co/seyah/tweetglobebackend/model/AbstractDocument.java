@@ -22,8 +22,9 @@
 //	Created for Project :           EXPERIMEDIA
 //
 /////////////////////////////////////////////////////////////////////////
-package uk.co.seyah.tweetglobebackend.service;
+package uk.co.seyah.tweetglobebackend.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.springframework.data.annotation.Id;
 
 /**
@@ -32,6 +33,7 @@ import org.springframework.data.annotation.Id;
 public class AbstractDocument {
 
     @Id
+    @JsonIgnore
     private String id;
 
     public String getId() {

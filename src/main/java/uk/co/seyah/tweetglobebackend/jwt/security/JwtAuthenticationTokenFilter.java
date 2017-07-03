@@ -1,10 +1,10 @@
-package uk.co.seyah.tweetglobebackend.security;
+package uk.co.seyah.tweetglobebackend.jwt.security;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.web.authentication.AbstractAuthenticationProcessingFilter;
-import uk.co.seyah.tweetglobebackend.model.JwtAuthenticationToken;
-import uk.co.seyah.tweetglobebackend.model.exception.JwtTokenMissingException;
+import uk.co.seyah.tweetglobebackend.jwt.JwtAuthenticationToken;
+import uk.co.seyah.tweetglobebackend.jwt.exception.JwtTokenMissingException;
 
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
@@ -32,7 +32,6 @@ public class JwtAuthenticationTokenFilter extends AbstractAuthenticationProcessi
     @Override
     public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response) {
         String header = request.getHeader(this.tokenHeader);
-
         if (header == null || !header.startsWith("Bearer ")) {
             throw new JwtTokenMissingException("No JWT token found in request headers");
         }

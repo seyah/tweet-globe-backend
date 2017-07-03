@@ -1,9 +1,9 @@
-package uk.co.seyah.tweetglobebackend.security;
+package uk.co.seyah.tweetglobebackend.jwt.security;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
-import uk.co.seyah.tweetglobebackend.model.dto.JwtUserDto;
+import uk.co.seyah.tweetglobebackend.jwt.JwtUserDto;
 
 /**
  * convenience class to generate a token for testing your requests.
@@ -29,18 +29,5 @@ public class JwtTokenGenerator {
                 .setClaims(claims)
                 .signWith(SignatureAlgorithm.HS512, secret)
                 .compact();
-    }
-
-    /**
-     * @param args
-     */
-    public static void main(String[] args) {
-
-        JwtUserDto user = new JwtUserDto();
-        user.setId(123L);
-        user.setUsername("Pascal");
-        user.setRole("admin");
-
-        System.out.println("**************************************\n\n" + generateToken(user, "my-very-secret-key") + "\n\n**************************************");
     }
 }

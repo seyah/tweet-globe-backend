@@ -4,12 +4,17 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import uk.co.seyah.tweetglobebackend.model.exception.ErrorMessage;
-import uk.co.seyah.tweetglobebackend.model.Credentials;
-import uk.co.seyah.tweetglobebackend.model.User;
+import uk.co.seyah.tweetglobebackend.jwt.JwtAuthenticationToken;
+import uk.co.seyah.tweetglobebackend.jwt.JwtUserDto;
+import uk.co.seyah.tweetglobebackend.model.Message;
+import uk.co.seyah.tweetglobebackend.model.user.Credentials;
+import uk.co.seyah.tweetglobebackend.model.user.User;
 import uk.co.seyah.tweetglobebackend.model.dto.UserDto;
+import uk.co.seyah.tweetglobebackend.jwt.security.JwtAuthenticationProvider;
+import uk.co.seyah.tweetglobebackend.jwt.security.JwtTokenGenerator;
 import uk.co.seyah.tweetglobebackend.service.CustomUserDetailsService;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 @RestController()
@@ -19,11 +24,40 @@ public class AuthController {
     @Autowired
     private CustomUserDetailsService userDetailsService;
 
+    @Autowired
+    private JwtAuthenticationProvider authenticationProvider;
+
     @RequestMapping(value = "/login", method = RequestMethod.POST)
-    public User login(@RequestBody Credentials credentials, HttpSession httpSession) {
-        User user = new User(credentials.getUsername(), httpSession.getId(), true);
-        httpSession.setAttribute("user", user);
-        return user;
+    public ResponseEntity<?> login(@RequestBody Credentials credentials, HttpServletRequest request) {
+
+        if (credentials.getEmail() == null || credentials.getPassword() == null) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new Message("Please enter an email and password!", "login.error.badLogin", 1));
+        }
+
+        String email = credentials.getEmail();
+
+        User user = userDetailsService.loadUserByEmail(email);
+
+        if (user == null) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new Message("E-mail not found.", "login.error.badLogin", 1));
+        }
+
+        if (!userDetailsService.checkPassword(user, credentials.getPassword())) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new Message("Invalid login. Please check your name and password.", "login.error.badLogin", 1));
+        }
+
+        JwtUserDto u = new JwtUserDto();
+        u.setId(123L);
+        u.setUsername(user.getUsername());
+        u.setRole("admin");
+        String token = JwtTokenGenerator.generateToken(u, "my-very-secret-key");
+
+        //user.setAuthenticated(true);
+        //userDetailsService.saveUser(user);
+
+        authenticationProvider.authenticate(new JwtAuthenticationToken(token));
+
+        return ResponseEntity.status(HttpStatus.ACCEPTED).body(new LoginResponse(token, true));
     }
 
     @RequestMapping(value = "/register", method = RequestMethod.POST)
@@ -33,18 +67,40 @@ public class AuthController {
             registered = userDetailsService.registerNewUserAccount(accountDto);
         } catch (Exception e) {
             System.out.println(e.getMessage());
-            return ResponseEntity.status(HttpStatus.I_AM_A_TEAPOT).body(new ErrorMessage(e.getMessage(), "register.error.badRegister"));
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(new Message(e.getMessage(), "register.error.badRegister", 1));
         }
-        return ResponseEntity.status(HttpStatus.OK).body(registered);
-    }
-
-    @RequestMapping(value = "/me", method = RequestMethod.GET)
-    public User session(HttpSession session) {
-        return (User) session.getAttribute("user");
+        return ResponseEntity.status(HttpStatus.OK).body(new Message("Thanks " + registered.getFirstName() + "! Registered successfully.", "register.success.registered", 0));
     }
 
     @RequestMapping(value = "/logout", method = RequestMethod.DELETE)
     public void logout(HttpSession session) {
         session.invalidate();
+    }
+
+    private class LoginResponse {
+
+        private String token;
+        private boolean isAuthenticated;
+
+        public LoginResponse(String token, boolean isAuthenticated){
+            this.token = token;
+            this.isAuthenticated = isAuthenticated;
+        }
+
+        public String getToken() {
+            return token;
+        }
+
+        public void setToken(String token) {
+            this.token = token;
+        }
+
+        public boolean isAuthenticated() {
+            return isAuthenticated;
+        }
+
+        public void setAuthenticated(boolean authenticated) {
+            isAuthenticated = authenticated;
+        }
     }
 }

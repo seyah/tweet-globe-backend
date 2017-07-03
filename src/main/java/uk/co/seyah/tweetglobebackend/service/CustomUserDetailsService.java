@@ -8,7 +8,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-import uk.co.seyah.tweetglobebackend.model.User;
+import uk.co.seyah.tweetglobebackend.model.user.User;
 import uk.co.seyah.tweetglobebackend.model.dto.UserDto;
 
 import java.util.ArrayList;
@@ -24,14 +24,30 @@ public class CustomUserDetailsService implements UserDetailsService {
 	private PasswordEncoder passwordEncoder;
 
 	@Override
-	public UserDetails loadUserByUsername(String userName) throws UsernameNotFoundException {
+	public User loadUserByUsername(String userName) throws UsernameNotFoundException {
 		User user = userRepo.findOneByUsername(userName);
 		if (user == null) {
 			throw new UsernameNotFoundException("Unknown username: " + userName);
 		}
-		org.springframework.security.core.userdetails.User userDetail =
-				new org.springframework.security.core.userdetails.User(user.getEmail(), user.getPassword(), true, true, true, true, getAuthorities(user.getRole()));
-		return userDetail;
+
+		return user;
+	}
+
+	public User loadUserByEmail(String email) throws UsernameNotFoundException {
+		User user = userRepo.findOneByEmail(email);
+
+		if (user == null) {
+			throw new UsernameNotFoundException("Unknown email: " + email);
+		}
+		return user;
+	}
+
+	public User saveUser(User user){
+		return userRepo.save(user);
+	}
+
+	public boolean checkPassword(UserDetails user, String password){
+		return passwordEncoder.matches(password, user.getPassword());
 	}
 
 	public List<GrantedAuthority> getAuthorities(Integer role) {
@@ -57,6 +73,7 @@ public class CustomUserDetailsService implements UserDetailsService {
 		user.setFirstName(accountDto.getFirstName());
 		user.setLastName(accountDto.getLastName());
 		user.setPassword(passwordEncoder.encode(accountDto.getPassword()));
+		user.setUsername(accountDto.getUsername());
 		user.setEmail(accountDto.getEmail());
 		user.setRole(2);
 		return userRepo.save(user);
