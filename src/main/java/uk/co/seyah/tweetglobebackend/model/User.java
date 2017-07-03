@@ -1,5 +1,6 @@
 package uk.co.seyah.tweetglobebackend.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.springframework.data.annotation.Id;
 
 import java.io.Serializable;
@@ -13,7 +14,10 @@ public class User implements Serializable {
   private String lastName;
   private String email;
   private String username;
+
+  @JsonIgnore
   private String password;
+
   private String token;
   private int role;
   private boolean authenticated;
