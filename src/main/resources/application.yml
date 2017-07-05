@@ -11,6 +11,7 @@ social:
     accessTokenSecret: 25t5gs6YKYlVl1yeXyxLufGdqbLbSwUjJNsWZshoXcUnJ
 
 taskExecutor:
+  enabled: false
   corePoolSize: 5
   maxPoolSize: 10
-  queueCapacity: 25
+  queueCapacity: 15

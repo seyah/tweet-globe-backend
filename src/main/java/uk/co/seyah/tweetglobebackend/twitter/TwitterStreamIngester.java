@@ -1,6 +1,7 @@
 package uk.co.seyah.tweetglobebackend.twitter;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 import org.springframework.social.twitter.api.*;
 import org.springframework.stereotype.Service;
@@ -20,19 +21,24 @@ public class TwitterStreamIngester implements StreamListener {
     @Autowired
     private ThreadPoolTaskExecutor taskExecutor;
 
-    private BlockingQueue<Tweet> queue = new ArrayBlockingQueue<>(20);
+    @Value("${taskExecutor.enabled}")
+    private boolean isEnabled;
+
+    private BlockingQueue<Tweet> queue = new ArrayBlockingQueue<>(10);
 
     public void run() {
-        List<StreamListener> listeners = new ArrayList<>();
-        listeners.add(this);
-        twitter.streamingOperations().sample(listeners);
+        if(isEnabled) {
+            List<StreamListener> listeners = new ArrayList<>();
+            listeners.add(this);
+            twitter.streamingOperations().sample(listeners);
+        }
     }
 
     @PostConstruct
     public void afterPropertiesSet() throws Exception {
         if (true) {
             for (int i = 0; i < taskExecutor.getMaxPoolSize(); i++) {
-                taskExecutor.execute(new TweetProcessor(queue));
+                taskExecutor.execute(new TweetProcessor(twitter, queue));
             }
 
             run();
