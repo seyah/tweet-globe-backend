@@ -3,3 +3,14 @@ jwt:
   secret: my-very-secret-key
 logging:
   level: debug
+social:
+  twitter:
+    consumerKey: UvhExjFNaoxEGMq22MinBa5mc
+    consumerSecret: 2Wb0PncZQy4uyGAOnG3aRQ0hUpaELhYbSiBUbtKDRyoMZvhfft
+    accessToken: 880588741-TAXbr0TQSs1r8uLEeaKsMa7HfHQc0nARfzEypsRp
+    accessTokenSecret: 25t5gs6YKYlVl1yeXyxLufGdqbLbSwUjJNsWZshoXcUnJ
+
+taskExecutor:
+  corePoolSize: 5
+  maxPoolSize: 10
+  queueCapacity: 25
