@@ -4,12 +4,11 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
-import uk.co.seyah.tweetglobebackend.model.AbstractDocument;
 
 import java.util.Collection;
 
 @Document(collection = "Users")
-public class User extends AbstractDocument implements UserDetails {
+public class User implements UserDetails {
 
   private String firstName;
   private String lastName;
