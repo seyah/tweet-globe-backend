@@ -1,8 +1,8 @@
 package uk.co.seyah.tweetglobebackend.twitter;
 
+import com.sun.istack.internal.logging.Logger;
 import org.springframework.social.twitter.api.Tweet;
 
-import java.util.Set;
 import java.util.concurrent.BlockingQueue;
 import java.util.regex.Pattern;
 
@@ -23,7 +23,7 @@ public class TweetProcessor implements Runnable {
                 Tweet tweet = queue.take();
                 processTweet(tweet);
             } catch (InterruptedException e) {
-                e.printStackTrace();
+                Logger.getLogger(this.getClass()).info("Shutting down Twitter stream service.");
             }
         }
     }
@@ -36,6 +36,6 @@ public class TweetProcessor implements Runnable {
             return;
         }
 
-        System.out.println(tweetEntity.getText());
+        System.out.println(text);
     }
 }
