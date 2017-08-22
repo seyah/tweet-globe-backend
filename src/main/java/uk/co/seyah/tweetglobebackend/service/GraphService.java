@@ -73,7 +73,7 @@ public class GraphService {
         return tweetRepository.save(tweet);
     }
 
-    public List<Map> findTopKeywords() {
+    public List<Map> findTopHashtags() {
         return hashtagRepository.findTopTags();
     }
 
