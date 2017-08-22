@@ -7,7 +7,6 @@ import org.springframework.social.twitter.api.TwitterProfile;
 import uk.co.seyah.tweetglobebackend.model.graph.object.Hashtag;
 import uk.co.seyah.tweetglobebackend.model.graph.object.Profile;
 import uk.co.seyah.tweetglobebackend.service.GraphService;
-import uk.co.seyah.tweetglobebackend.service.ITweetRepository;
 
 import java.util.*;
 import java.util.concurrent.BlockingQueue;

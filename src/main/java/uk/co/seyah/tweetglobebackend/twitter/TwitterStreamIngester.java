@@ -6,12 +6,10 @@ import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 import org.springframework.social.twitter.api.*;
 import org.springframework.stereotype.Service;
 import uk.co.seyah.tweetglobebackend.service.GraphService;
-import uk.co.seyah.tweetglobebackend.service.ITweetRepository;
 
 import javax.annotation.PostConstruct;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.BlockingQueue;
 
