@@ -2,7 +2,13 @@ jwt:
   header: Authorization
   secret: my-very-secret-key
 logging:
-  level: debug
+  level:
+    root: ERROR
+    org:
+      springframework: INFO
+
+
+
 social:
   twitter:
     consumerKey: UvhExjFNaoxEGMq22MinBa5mc

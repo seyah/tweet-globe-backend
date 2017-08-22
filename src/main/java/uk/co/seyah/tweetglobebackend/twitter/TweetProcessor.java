@@ -37,7 +37,7 @@ public class TweetProcessor implements Runnable {
                 Tweet tweet = queue.take();
                 processTweet(tweet);
             } catch (Exception e) {
-                Logger.getLogger(this.getClass()).info("Shutting down Twitter processor. " + e.getMessage());
+                Logger.getLogger(this.getClass()).warning("Shutting down Twitter processor. " + e.getMessage());
             }
         }
     }

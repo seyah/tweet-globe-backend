@@ -39,7 +39,7 @@ public class Tweet {
                 tweetEntity.getText(),
                 tweetEntity.getFavoriteCount(),
                 tweetEntity.getRetweetCount(),
-                tweetEntity.isRetweeted(),
+                tweetEntity.isRetweet(),
                 tweetEntity.getCreatedAt());
     }
 
