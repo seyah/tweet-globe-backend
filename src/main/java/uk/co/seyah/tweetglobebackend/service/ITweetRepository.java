@@ -8,6 +8,6 @@ public interface ITweetRepository extends GraphRepository<Tweet> {
 
     public Tweet findOneByGraphId(Long graphId);
 
-    public Tweet findByPr(Profile profile);
+    public Tweet findByProfile(Profile profile);
 
 }
