@@ -14,12 +14,12 @@ public class Hashtag {
     @Index(unique = true)
     private String word;
 
-    private Date createdOn = new Date();
+    private Long createdOn = new Date().getTime();
 
     public Hashtag() {
     }
 
-    public Hashtag(String word, Date createdOn) {
+    public Hashtag(String word, Long createdOn) {
         this.word = word;
         this.createdOn = createdOn;
     }
@@ -40,11 +40,11 @@ public class Hashtag {
         this.word = word;
     }
 
-    public Date getCreatedOn() {
+    public Long getCreatedOn() {
         return createdOn;
     }
 
-    public void setCreatedOn(Date createdOn) {
+    public void setCreatedOn(Long createdOn) {
         this.createdOn = createdOn;
     }
 }

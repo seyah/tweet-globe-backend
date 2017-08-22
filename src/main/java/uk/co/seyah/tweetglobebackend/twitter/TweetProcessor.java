@@ -67,7 +67,7 @@ public class TweetProcessor implements Runnable {
         while (matcher.find()) {
             String handle = matcher.group();
             // removing '#' prefix
-            Hashtag hashtag = new Hashtag(handle.substring(1), new Date());
+            Hashtag hashtag = new Hashtag(handle.substring(1), new Date().getTime());
             hashtag = graphService.createOrAddHashtag(hashtag);
             hashtags.add(hashtag);
         }

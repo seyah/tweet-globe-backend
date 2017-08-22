@@ -20,12 +20,12 @@ public class Profile {
     private String profileImageUrl;
     private String description;
     private String location;
-    private Date createdDate;
+    private Long createdDate;
 
     public Profile() {
     }
 
-    public Profile(String screenName, String name, String url, String profileImageUrl, String description, String location, Date createdDate) {
+    public Profile(String screenName, String name, String url, String profileImageUrl, String description, String location, Long createdDate) {
         this.screenName = screenName;
         this.name = name;
         this.url = url;
@@ -42,7 +42,7 @@ public class Profile {
         this.profileImageUrl = profile.getProfileImageUrl();
         this.description = profile.getDescription();
         this.location = profile.getLocation();
-        this.createdDate = profile.getCreatedDate();
+        this.createdDate = profile.getCreatedDate().getTime();
     }
 
 
@@ -102,11 +102,11 @@ public class Profile {
         this.location = location;
     }
 
-    public Date getCreatedDate() {
+    public Long getCreatedDate() {
         return createdDate;
     }
 
-    public void setCreatedDate(Date createdDate) {
+    public void setCreatedDate(Long createdDate) {
         this.createdDate = createdDate;
     }
 }

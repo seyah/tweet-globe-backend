@@ -29,7 +29,7 @@ public class Tweet {
     private int favouriteCount;
     private int retweetCount;
     private boolean isRetweeted;
-    private Date creationDate;
+    private Long creationDate;
 
     public Tweet() {
     }
@@ -40,7 +40,7 @@ public class Tweet {
                 tweetEntity.getFavoriteCount(),
                 tweetEntity.getRetweetCount(),
                 tweetEntity.isRetweet(),
-                tweetEntity.getCreatedAt());
+                tweetEntity.getCreatedAt().getTime());
     }
 
     public Tweet(String lang, String text) {
@@ -48,7 +48,7 @@ public class Tweet {
         this.text = text;
     }
 
-    public Tweet(String lang, String text, int favouriteCount, int retweetCount, boolean isRetweeted, Date creationDate) {
+    public Tweet(String lang, String text, int favouriteCount, int retweetCount, boolean isRetweeted, Long creationDate) {
         this.lang = lang;
         this.text = text;
         this.favouriteCount = favouriteCount;
@@ -127,11 +127,11 @@ public class Tweet {
         isRetweeted = retweeted;
     }
 
-    public Date getCreationDate() {
+    public Long getCreationDate() {
         return creationDate;
     }
 
-    public void setCreationDate(Date creationDate) {
+    public void setCreationDate(Long creationDate) {
         this.creationDate = creationDate;
     }
 }
