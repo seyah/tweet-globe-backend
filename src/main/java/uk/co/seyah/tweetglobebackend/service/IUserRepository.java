@@ -1,13 +1,12 @@
 package uk.co.seyah.tweetglobebackend.service;
 
-import org.springframework.data.mongodb.repository.MongoRepository;
+import org.springframework.data.neo4j.repository.GraphRepository;
 import org.springframework.stereotype.Repository;
 import uk.co.seyah.tweetglobebackend.model.user.User;
 
-@Repository
-public interface IUserRepository extends MongoRepository<User, String> {
+public interface IUserRepository extends GraphRepository<User> {
 
-    public User findOneById(String id);
+    public User findOneByGraphId(Long graphId);
 
     public User findOneByEmail(String email);
 

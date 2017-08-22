@@ -5,10 +5,13 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 import org.springframework.social.twitter.api.*;
 import org.springframework.stereotype.Service;
+import uk.co.seyah.tweetglobebackend.service.GraphService;
+import uk.co.seyah.tweetglobebackend.service.ITweetRepository;
 
 import javax.annotation.PostConstruct;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.BlockingQueue;
 
@@ -21,10 +24,13 @@ public class TwitterStreamIngester implements StreamListener {
     @Autowired
     private ThreadPoolTaskExecutor taskExecutor;
 
+    @Autowired
+    private GraphService graphService;
+
     @Value("${taskExecutor.enabled}")
     private boolean isEnabled;
 
-    private BlockingQueue<Tweet> queue = new ArrayBlockingQueue<>(10);
+    private BlockingQueue<Tweet> queue = new ArrayBlockingQueue<>(15);
 
     public void run() {
         if(isEnabled) {
@@ -38,7 +44,7 @@ public class TwitterStreamIngester implements StreamListener {
     public void afterPropertiesSet() throws Exception {
         if (true) {
             for (int i = 0; i < taskExecutor.getMaxPoolSize(); i++) {
-                taskExecutor.execute(new TweetProcessor(twitter, queue));
+                taskExecutor.execute(new TweetProcessor(twitter, graphService, queue));
             }
 
             run();

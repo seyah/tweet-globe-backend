@@ -1,18 +1,18 @@
 package uk.co.seyah.tweetglobebackend.model.user;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import org.springframework.data.annotation.Id;
-import org.springframework.data.mongodb.core.mapping.Document;
+import org.neo4j.ogm.annotation.GraphId;
+import org.neo4j.ogm.annotation.NodeEntity;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Collection;
 
-@Document(collection = "Users")
+@NodeEntity
 public class User implements UserDetails {
 
-  @Id
-  private String id;
+  @GraphId
+  private Long graphId;
 
   private String firstName;
   private String lastName;
@@ -44,12 +44,12 @@ public class User implements UserDetails {
     this.authenticated = authenticated;
   }
 
-  public String getId() {
-    return id;
+  public Long getGraphId() {
+    return graphId;
   }
 
-  public void setId(String id) {
-    this.id = id;
+  public void setGraphId(Long graphId) {
+    this.graphId = graphId;
   }
 
   public String getFirstName() {
