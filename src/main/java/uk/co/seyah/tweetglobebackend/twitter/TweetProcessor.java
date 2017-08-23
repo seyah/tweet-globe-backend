@@ -55,9 +55,11 @@ public class TweetProcessor implements Runnable {
 
         graphService.addTweet(tweet);
         author = graphService.createOrAddProfile(author);
+        Set<Hashtag> hashtags = hashtagsFromText(tweet.getText());
 
         graphService.connectTweetWithAuthor(tweet, author);
-        graphService.connectTweetWithHashtags(tweet, hashtagsFromText(tweet.getText()));
+        graphService.connectTweetWithHashtags(tweet, hashtags);
+        graphService.connectHashtagsWithHashtags(hashtags);
         graphService.connectTweetWithMentions(tweet, mentionsFromText(tweet.getText()));
     }
 
