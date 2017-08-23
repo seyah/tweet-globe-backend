@@ -18,9 +18,9 @@ social:
 
 taskExecutor:
   enabled: true
-  corePoolSize: 5
-  maxPoolSize: 10
-  queueCapacity: 15
+  corePoolSize: 50
+  maxPoolSize: 100
+  queueCapacity: 100
 
 spring:
   data:

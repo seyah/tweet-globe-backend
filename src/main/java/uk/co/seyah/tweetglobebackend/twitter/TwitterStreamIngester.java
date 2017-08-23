@@ -28,7 +28,7 @@ public class TwitterStreamIngester implements StreamListener {
     @Value("${taskExecutor.enabled}")
     private boolean isEnabled;
 
-    private BlockingQueue<Tweet> queue = new ArrayBlockingQueue<>(15);
+    private BlockingQueue<Tweet> queue = new ArrayBlockingQueue<>(100);
 
     public void run() {
         if(isEnabled) {
