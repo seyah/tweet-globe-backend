@@ -3,9 +3,7 @@ package uk.co.seyah.tweetglobebackend.model.graph.object;
 import org.neo4j.ogm.annotation.GraphId;
 import org.neo4j.ogm.annotation.NodeEntity;
 import org.neo4j.ogm.annotation.Relationship;
-import uk.co.seyah.tweetglobebackend.model.graph.relation.Mention;
 
-import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -15,14 +13,8 @@ public class Tweet {
     @GraphId
     private Long graphId;
 
-    @Relationship(type = "Author", direction = Relationship.UNDIRECTED)
-    private Profile profile;
-
     @Relationship(type = "Tag")
     private Set<Hashtag> hashtags;
-
-    @Relationship(type = "Mention")
-    private Set<Profile> mentions;
 
     private String lang;
     private String text;
@@ -30,6 +22,7 @@ public class Tweet {
     private int retweetCount;
     private boolean isRetweeted;
     private Long creationDate;
+    private String location;
 
     public Tweet() {
     }
@@ -40,7 +33,8 @@ public class Tweet {
                 tweetEntity.getFavoriteCount(),
                 tweetEntity.getRetweetCount(),
                 tweetEntity.isRetweet(),
-                tweetEntity.getCreatedAt().getTime());
+                tweetEntity.getCreatedAt().getTime(),
+                tweetEntity.getUser().getLocation());
     }
 
     public Tweet(String lang, String text) {
@@ -48,13 +42,14 @@ public class Tweet {
         this.text = text;
     }
 
-    public Tweet(String lang, String text, int favouriteCount, int retweetCount, boolean isRetweeted, Long creationDate) {
+    public Tweet(String lang, String text, int favouriteCount, int retweetCount, boolean isRetweeted, Long creationDate, String location) {
         this.lang = lang;
         this.text = text;
         this.favouriteCount = favouriteCount;
         this.retweetCount = retweetCount;
         this.isRetweeted = isRetweeted;
         this.creationDate = creationDate;
+        this.location = location;
     }
 
     public void addHashtag(Hashtag hashtag) {
@@ -64,27 +59,12 @@ public class Tweet {
         hashtags.add(hashtag);
     }
 
-    public void addMention(Profile profile) {
-        if(mentions == null) {
-            mentions = new HashSet<>();
-        }
-        mentions.add(profile);
-    }
-
     public Long getGraphId() {
         return graphId;
     }
 
     public void setGraphId(Long graphId) {
         this.graphId = graphId;
-    }
-
-    public Profile getProfile() {
-        return profile;
-    }
-
-    public void setProfile(Profile profile) {
-        this.profile = profile;
     }
 
     public String getLang() {
@@ -133,5 +113,21 @@ public class Tweet {
 
     public void setCreationDate(Long creationDate) {
         this.creationDate = creationDate;
+    }
+
+    public Set<Hashtag> getHashtags() {
+        return hashtags;
+    }
+
+    public void setHashtags(Set<Hashtag> hashtags) {
+        this.hashtags = hashtags;
+    }
+
+    public String getLocation() {
+        return location;
+    }
+
+    public void setLocation(String location) {
+        this.location = location;
     }
 }

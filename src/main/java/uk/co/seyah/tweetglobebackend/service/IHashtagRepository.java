@@ -3,8 +3,6 @@ package uk.co.seyah.tweetglobebackend.service;
 import org.springframework.data.neo4j.annotation.Query;
 import org.springframework.data.neo4j.repository.GraphRepository;
 import uk.co.seyah.tweetglobebackend.model.graph.object.Hashtag;
-import uk.co.seyah.tweetglobebackend.model.graph.object.Profile;
-import uk.co.seyah.tweetglobebackend.model.graph.object.Tweet;
 
 import java.util.List;
 import java.util.Map;
