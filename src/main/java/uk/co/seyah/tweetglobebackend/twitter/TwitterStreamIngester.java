@@ -42,7 +42,7 @@ public class TwitterStreamIngester implements StreamListener {
     public void afterPropertiesSet() throws Exception {
         if (true) {
             for (int i = 0; i < taskExecutor.getMaxPoolSize(); i++) {
-                taskExecutor.execute(new TweetProcessor(twitter, graphService, queue));
+                taskExecutor.execute(new TweetProcessor(graphService, queue));
             }
 
             run();

@@ -14,16 +14,12 @@ import java.util.regex.Pattern;
 
 public class TweetProcessor implements Runnable {
 
-
     private static final Pattern HASHTAG_PATTERN = Pattern.compile("#\\w+");
-    private static final Pattern MENTION_PATTERN = Pattern.compile("@\\w+");
 
-    private Twitter twitter;
     private GraphService graphService;
     private final BlockingQueue<Tweet> queue;
 
-    public TweetProcessor(Twitter twitter, GraphService graphService, BlockingQueue<Tweet> queue) {
-        this.twitter = twitter;
+    public TweetProcessor(GraphService graphService, BlockingQueue<Tweet> queue) {
         this.graphService = graphService;
         this.queue = queue;
     }
