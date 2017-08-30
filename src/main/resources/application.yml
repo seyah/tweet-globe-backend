@@ -17,7 +17,7 @@ social:
     accessTokenSecret: 25t5gs6YKYlVl1yeXyxLufGdqbLbSwUjJNsWZshoXcUnJ
 
 taskExecutor:
-  enabled: true
+  enabled: false
   corePoolSize: 50
   maxPoolSize: 100
   queueCapacity: 100
@@ -26,4 +26,4 @@ spring:
   data:
     neo4j:
       username: neo4j
-      password: yoana123
+      password: neo4j
