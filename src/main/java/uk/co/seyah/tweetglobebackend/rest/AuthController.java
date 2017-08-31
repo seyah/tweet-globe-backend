@@ -71,7 +71,6 @@ public class AuthController {
         try {
             registered = userDetailsService.registerNewUserAccount(accountDto);
         } catch (Exception e) {
-            e.printStackTrace();
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(new Message("Username or e-mail already exists!", "register.error.badRegister", 1));
         }
         return ResponseEntity.status(HttpStatus.OK).body(new Message("Thanks " + registered.getFirstName() + "! Registered successfully.", "register.success.registered", 0));
