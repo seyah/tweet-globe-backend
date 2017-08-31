@@ -36,7 +36,12 @@ public class AuthController {
 
         String email = credentials.getEmail();
 
-        User user = userDetailsService.loadUserByEmail(email);
+        User user;
+        try {
+            user = userDetailsService.loadUserByEmail(email);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.I_AM_A_TEAPOT).body(new Message("E-mail not found.", "login.error.badLogin", 1));
+        }
 
         if (user == null) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new Message("E-mail not found.", "login.error.badLogin", 1));
@@ -66,8 +71,8 @@ public class AuthController {
         try {
             registered = userDetailsService.registerNewUserAccount(accountDto);
         } catch (Exception e) {
-            System.out.println(e.getMessage());
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(new Message(e.getMessage(), "register.error.badRegister", 1));
+            e.printStackTrace();
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(new Message("Username or e-mail already exists!", "register.error.badRegister", 1));
         }
         return ResponseEntity.status(HttpStatus.OK).body(new Message("Thanks " + registered.getFirstName() + "! Registered successfully.", "register.success.registered", 0));
     }

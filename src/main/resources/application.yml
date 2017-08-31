@@ -26,4 +26,4 @@ spring:
   data:
     neo4j:
       username: neo4j
-      password: neo4j
+      password: neo5j

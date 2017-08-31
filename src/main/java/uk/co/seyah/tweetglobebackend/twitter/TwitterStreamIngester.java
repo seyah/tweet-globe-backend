@@ -40,13 +40,11 @@ public class TwitterStreamIngester implements StreamListener {
 
     @PostConstruct
     public void afterPropertiesSet() throws Exception {
-        if (true) {
-            for (int i = 0; i < taskExecutor.getMaxPoolSize(); i++) {
-                taskExecutor.execute(new TweetProcessor(graphService, queue));
-            }
-
-            run();
+        for (int i = 0; i < taskExecutor.getMaxPoolSize(); i++) {
+            taskExecutor.execute(new TweetProcessor(graphService, queue));
         }
+
+        run();
     }
 
     @Override
