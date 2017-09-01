@@ -58,6 +58,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .cors().and().csrf().disable()
                 // All urls must be authenticated (filter for token always fires (/**)
                 .authorizeRequests().antMatchers("/auth/**").permitAll().and()
+                .authorizeRequests().antMatchers("/api/**").authenticated().and()
                 .authorizeRequests().anyRequest().authenticated()
                 .and()
 

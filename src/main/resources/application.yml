@@ -5,7 +5,7 @@ logging:
   level:
     root: ERROR
     org:
-      springframework: INFO
+      springframework: TRACE
 
 
 

@@ -23,7 +23,7 @@ public class JwtAuthenticationTokenFilter extends AbstractAuthenticationProcessi
     private String tokenHeader;
 
     public JwtAuthenticationTokenFilter() {
-        super("/api/**");
+        super("/**");
     }
 
     /**
@@ -39,7 +39,6 @@ public class JwtAuthenticationTokenFilter extends AbstractAuthenticationProcessi
         String authToken = header.substring(7);
 
         JwtAuthenticationToken authRequest = new JwtAuthenticationToken(authToken);
-
         return getAuthenticationManager().authenticate(authRequest);
     }
 
