@@ -1,10 +1,10 @@
 package uk.co.seyah.tweetglobebackend.service;
 
-import org.springframework.data.neo4j.repository.GraphRepository;
+import org.springframework.data.neo4j.repository.Neo4jRepository;
 import org.springframework.stereotype.Repository;
 import uk.co.seyah.tweetglobebackend.model.user.User;
 
-public interface IUserRepository extends GraphRepository<User> {
+public interface IUserRepository extends Neo4jRepository<User, String> {
 
     public User findOneByGraphId(Long graphId);
 

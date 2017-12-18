@@ -1,6 +1,5 @@
 package uk.co.seyah.tweetglobebackend.twitter;
 
-import com.sun.istack.internal.logging.Logger;
 import org.springframework.social.twitter.api.Tweet;
 import org.springframework.social.twitter.api.Twitter;
 import org.springframework.social.twitter.api.TwitterProfile;
@@ -31,7 +30,6 @@ public class TweetProcessor implements Runnable {
                 Tweet tweet = queue.take();
                 processTweet(tweet);
             } catch (Exception e) {
-                Logger.getLogger(this.getClass()).warning("Shutting down Twitter processor. " + e.getMessage());
             }
         }
     }

@@ -1,13 +1,13 @@
 package uk.co.seyah.tweetglobebackend.service;
 
 import org.springframework.data.neo4j.annotation.Query;
-import org.springframework.data.neo4j.repository.GraphRepository;
+import org.springframework.data.neo4j.repository.Neo4jRepository;
 import uk.co.seyah.tweetglobebackend.model.graph.object.Hashtag;
 
 import java.util.List;
 import java.util.Map;
 
-public interface IHashtagRepository extends GraphRepository<Hashtag> {
+public interface IHashtagRepository extends Neo4jRepository<Hashtag, String> {
 
     public Hashtag findOneByGraphId(Long graphId);
 

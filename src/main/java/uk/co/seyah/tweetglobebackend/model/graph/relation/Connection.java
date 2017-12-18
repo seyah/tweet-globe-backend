@@ -10,7 +10,6 @@ import uk.co.seyah.tweetglobebackend.model.graph.object.Tweet;
 @RelationshipEntity(type = "Connection")
 public class Connection {
 
-    @GraphId
     private Long graphId;
 
     @StartNode
