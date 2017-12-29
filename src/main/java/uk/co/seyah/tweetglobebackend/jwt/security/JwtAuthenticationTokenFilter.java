@@ -23,7 +23,7 @@ public class JwtAuthenticationTokenFilter extends AbstractAuthenticationProcessi
     private String tokenHeader;
 
     public JwtAuthenticationTokenFilter() {
-        super("/**");
+        super("/api/**");
     }
 
     /**

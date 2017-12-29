@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
 
 @RestController()
-@RequestMapping("/tweet")
+@RequestMapping("/api/tweet")
 public class TweetController {
 
     @Autowired
@@ -21,6 +21,18 @@ public class TweetController {
 
     @RequestMapping(value = "/tweets", method = RequestMethod.GET)
     public ResponseEntity<?> getTweets() {
+        SearchParameters params = new SearchParameters("#spring")
+                .lang("en")
+                .count(100)
+                .resultType(SearchParameters.ResultType.RECENT)
+                .includeEntities(false);
+        List<Tweet> tweets = twitter.searchOperations().search(params).getTweets();
+
+        return ResponseEntity.ok(tweets);
+    }
+
+    @RequestMapping(value = "/judgement", method = RequestMethod.POST)
+    public ResponseEntity<?> passJudgement() {
         SearchParameters params = new SearchParameters("#spring")
                 .lang("en")
                 .count(100)

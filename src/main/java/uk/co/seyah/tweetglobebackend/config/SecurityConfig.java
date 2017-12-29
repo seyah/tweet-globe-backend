@@ -36,7 +36,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         return new BCryptPasswordEncoder(11);
     }
 
-    @Bean
     @Override
     public AuthenticationManager authenticationManager() throws Exception {
 
@@ -58,13 +57,11 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .cors().and().csrf().disable()
                 // All urls must be authenticated (filter for token always fires (/**)
                 .authorizeRequests().antMatchers("/auth/**").permitAll().and()
-                .authorizeRequests().antMatchers("/api/**").authenticated().and()
-                .authorizeRequests().anyRequest().authenticated()
-                .and()
+                //.authorizeRequests().antMatchers("/api/**").authenticated().and()
+                .authorizeRequests().anyRequest().authenticated().and()
 
                 // Call our errorHandler if authentication/authorisation fails
-                .exceptionHandling().authenticationEntryPoint(unauthorizedHandler)
-                .and()
+                .exceptionHandling().authenticationEntryPoint(unauthorizedHandler).and()
                 // don't create session
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS); //.and()
         // Custom JWT based security filter
