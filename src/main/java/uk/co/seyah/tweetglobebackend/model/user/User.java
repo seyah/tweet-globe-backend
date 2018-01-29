@@ -1,17 +1,22 @@
 package uk.co.seyah.tweetglobebackend.model.user;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import org.neo4j.ogm.annotation.GeneratedValue;
 import org.neo4j.ogm.annotation.GraphId;
+import org.neo4j.ogm.annotation.Id;
 import org.neo4j.ogm.annotation.NodeEntity;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
+import uk.co.seyah.tweetglobebackend.model.graph.object.Score;
 
 import java.util.Collection;
+import java.util.List;
 
 @NodeEntity
 public class User implements UserDetails {
 
-  @GraphId
+  @Id
+  @GeneratedValue
   private Long graphId;
 
   private String firstName;

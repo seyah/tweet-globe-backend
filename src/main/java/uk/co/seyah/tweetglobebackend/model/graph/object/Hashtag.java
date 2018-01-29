@@ -1,9 +1,6 @@
 package uk.co.seyah.tweetglobebackend.model.graph.object;
 
-import org.neo4j.ogm.annotation.GraphId;
-import org.neo4j.ogm.annotation.Index;
-import org.neo4j.ogm.annotation.NodeEntity;
-import org.neo4j.ogm.annotation.Relationship;
+import org.neo4j.ogm.annotation.*;
 import uk.co.seyah.tweetglobebackend.model.graph.relation.Connection;
 
 import java.util.Date;
@@ -13,7 +10,8 @@ import java.util.Set;
 @NodeEntity
 public class Hashtag {
 
-    @GraphId
+    @Id
+    @GeneratedValue
     private Long graphId;
 
     @Index(unique = true)

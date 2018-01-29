@@ -1,8 +1,6 @@
 package uk.co.seyah.tweetglobebackend.model.graph.object;
 
-import org.neo4j.ogm.annotation.GraphId;
-import org.neo4j.ogm.annotation.NodeEntity;
-import org.neo4j.ogm.annotation.Relationship;
+import org.neo4j.ogm.annotation.*;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -10,7 +8,8 @@ import java.util.Set;
 @NodeEntity
 public class Tweet {
 
-    @GraphId
+    @Id
+    @GeneratedValue
     private Long graphId;
 
     @Relationship(type = "Tag")

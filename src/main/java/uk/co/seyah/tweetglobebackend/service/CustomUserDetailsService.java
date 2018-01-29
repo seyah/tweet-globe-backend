@@ -8,6 +8,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import uk.co.seyah.tweetglobebackend.model.graph.object.Score;
 import uk.co.seyah.tweetglobebackend.model.user.User;
 import uk.co.seyah.tweetglobebackend.model.dto.UserDto;
 
@@ -19,6 +20,9 @@ public class CustomUserDetailsService implements UserDetailsService {
 
 	@Autowired
 	IUserRepository userRepo;
+
+	@Autowired
+	IScoreRepository scoreRepo;
 
 	@Autowired
 	private PasswordEncoder passwordEncoder;
@@ -80,6 +84,12 @@ public class CustomUserDetailsService implements UserDetailsService {
 		user.setUsername(accountDto.getUsername());
 		user.setEmail(accountDto.getEmail());
 		user.setRole(2);
+
+		scoreRepo.save(new Score("Technology", 5, user));
+		scoreRepo.save(new Score("Sport", 5, user));
+		scoreRepo.save(new Score("Entertainment", 5, user));
+		scoreRepo.save(new Score("Politics", 5, user));
+
 		return userRepo.save(user);
 	}
 
