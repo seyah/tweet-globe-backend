@@ -89,6 +89,7 @@ public class CustomUserDetailsService implements UserDetailsService {
 		scoreRepo.save(new Score("Sport", 5, user));
 		scoreRepo.save(new Score("Entertainment", 5, user));
 		scoreRepo.save(new Score("Politics", 5, user));
+		scoreRepo.save(new Score("Business", 5, user));
 
 		return userRepo.save(user);
 	}

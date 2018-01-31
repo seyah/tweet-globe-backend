@@ -10,6 +10,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
+import uk.ac.soton.seyahml.SeyahML;
+import uk.ac.soton.seyahml.api.SeyahMLAPI;
 import uk.co.seyah.tweetglobebackend.model.graph.object.Score;
 import uk.co.seyah.tweetglobebackend.model.user.User;
 import uk.co.seyah.tweetglobebackend.service.IScoreRepository;
@@ -17,6 +19,7 @@ import uk.co.seyah.tweetglobebackend.service.IUserRepository;
 
 import javax.servlet.http.HttpSession;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 @RestController()
@@ -56,14 +59,26 @@ public class RecommenderController {
 
     @RequestMapping(value = "/training_tweet", method = RequestMethod.GET)
     public ResponseEntity<?> getTrainingTweet() {
-        SearchParameters params = new SearchParameters("#england")
+        SearchParameters params = new SearchParameters("#politics")
                 .lang("en")
                 .count(1)
-                .resultType(SearchParameters.ResultType.MIXED)
+                .resultType(SearchParameters.ResultType.RECENT)
                 .includeEntities(false);
         List<Tweet> tweets = twitter.searchOperations().search(params).getTweets();
-
-        return ResponseEntity.ok(tweets.toArray());
+        List<HashMap<String, Object>> tweetsDTO = new ArrayList<>();
+        for (Tweet tweet : tweets) {
+            HashMap<String, Object> data = new HashMap<>();
+            data.put("text", tweet.getUnmodifiedText());
+            data.put("retweetCount", tweet.getRetweetCount());
+            data.put("favoriteCount", tweet.getFavoriteCount());
+            try {
+                data.put("topic", SeyahML.getInstance().predictTopic(tweet.getUnmodifiedText()).getName());
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            tweetsDTO.add(data);
+        }
+        return ResponseEntity.ok(tweetsDTO.toArray());
     }
 
 }
