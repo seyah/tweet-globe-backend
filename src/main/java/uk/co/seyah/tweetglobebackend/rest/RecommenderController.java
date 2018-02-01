@@ -59,7 +59,7 @@ public class RecommenderController {
 
     @RequestMapping(value = "/training_tweet", method = RequestMethod.GET)
     public ResponseEntity<?> getTrainingTweet() {
-        SearchParameters params = new SearchParameters("#politics")
+        SearchParameters params = new SearchParameters("#football")
                 .lang("en")
                 .count(1)
                 .resultType(SearchParameters.ResultType.RECENT)
@@ -71,7 +71,10 @@ public class RecommenderController {
             data.put("text", tweet.getUnmodifiedText());
             data.put("retweetCount", tweet.getRetweetCount());
             data.put("favoriteCount", tweet.getFavoriteCount());
+            data.put("profileImage", tweet.getProfileImageUrl());
+            data.put("user", tweet.getUser().getScreenName());
             try {
+                SeyahMLAPI.processTweetText(tweet.getUnmodifiedText());
                 data.put("topic", SeyahML.getInstance().predictTopic(tweet.getUnmodifiedText()).getName());
             } catch (Exception e) {
                 e.printStackTrace();
