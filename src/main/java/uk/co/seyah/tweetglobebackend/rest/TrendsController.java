@@ -28,7 +28,7 @@ public class TrendsController {
     @RequestMapping(value = "/", method = RequestMethod.GET)
     public ResponseEntity<?> getTrends() {
         Trends trends = twitter.searchOperations().getLocalTrends(44418);
-        List<Trend> trendList = trends.getTrends().subList(0, 9);
+        List<Trend> trendList = trends.getTrends();
 
         List<HashMap<String, String>> response = new ArrayList<>();
         for (Trend trend : trendList) {
@@ -43,9 +43,9 @@ public class TrendsController {
 
     @RequestMapping(value = "/{trend}", method = RequestMethod.GET)
     public ResponseEntity<?> getTrendData(@PathVariable String trend) throws Exception {
-        SearchParameters params = new SearchParameters(trend)
+        SearchParameters params = new SearchParameters(trend + " AND -filter:retweets AND -filter:replies")
                 .lang("en")
-                .count(100)
+                .count(500)
                 .resultType(SearchParameters.ResultType.RECENT)
                 .includeEntities(false);
         List<Tweet> tweets = twitter.searchOperations().search(params).getTweets();
@@ -56,8 +56,10 @@ public class TrendsController {
             String processedText = SeyahMLAPI.processTweetText(text);
 
             data.put("text", text);
+            data.put("user", tweet.getFromUser());
             data.put("topic", SeyahMLAPI.classifyTopic(processedText));
             data.put("sentiment", SeyahMLAPI.classifySentiment(processedText));
+            data.put("date", tweet.getCreatedAt().getTime());
 
             response.add(data);
         }
