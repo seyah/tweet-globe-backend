@@ -43,12 +43,32 @@ public class TrendsController {
 
     @RequestMapping(value = "/{trend}", method = RequestMethod.GET)
     public ResponseEntity<?> getTrendData(@PathVariable String trend) throws Exception {
-        SearchParameters params = new SearchParameters(trend + " AND -filter:retweets AND -filter:replies")
-                .lang("en")
-                .count(500)
-                .resultType(SearchParameters.ResultType.RECENT)
-                .includeEntities(false);
-        List<Tweet> tweets = twitter.searchOperations().search(params).getTweets();
+        long lowestId = -1, iterations = 0;
+        List<Tweet> tweets = new ArrayList<>();
+
+        while(tweets.size() < 500) {
+            SearchParameters params;
+            if(lowestId == -1) {
+                params = new SearchParameters(trend + " AND -filter:retweets AND -filter:replies")
+                        .lang("en")
+                        .count(500)
+                        .resultType(SearchParameters.ResultType.RECENT)
+                        .includeEntities(false);
+            } else {
+                params = new SearchParameters(trend + " AND -filter:retweets AND -filter:replies")
+                        .lang("en")
+                        .count(500)
+                        .resultType(SearchParameters.ResultType.RECENT)
+                        .maxId(lowestId - 1)
+                        .includeEntities(false);
+            }
+            tweets.addAll(twitter.searchOperations().search(params).getTweets());
+            lowestId = tweets.get(tweets.size() - 1).getId();
+            iterations++;
+        }
+
+        tweets = tweets.subList(0, 500);
+
         List<HashMap<String, Object>> response = new ArrayList<>();
         for (Tweet tweet : tweets) {
             HashMap<String, Object> data = new HashMap<>();
