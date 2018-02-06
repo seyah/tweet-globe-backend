@@ -55,11 +55,11 @@ public class UserController {
 
         List<String> texts = tweets.stream().map(tweet -> SeyahMLAPI.processTweetText(tweet.getUnmodifiedText()))
                 .collect(Collectors.toList());
-        List<ITopic> topics = SeyahMLAPI.classifyTopics(texts);
-        List<ISentiment> sentiments = SeyahMLAPI.classifySentiments(texts);
+        HashMap<String, ITopic> topics = SeyahMLAPI.classifyTopics(texts);
+        HashMap<String, ISentiment> sentiments = SeyahMLAPI.classifySentiments(texts);
 
         HashMap<String, Integer> sentimentCounter = new HashMap<>();
-        for (ISentiment sentiment : sentiments) {
+        for (ISentiment sentiment : sentiments.values()) {
             if(sentimentCounter.containsKey(sentiment.getName())) {
                 sentimentCounter.put(sentiment.getName(), sentimentCounter.get(sentiment.getName()) + 1);
             } else {
@@ -68,7 +68,7 @@ public class UserController {
         }
 
         HashMap<String, Integer> topicCounter = new HashMap<>();
-        for (ITopic topic : topics) {
+        for (ITopic topic : topics.values()) {
             if(topicCounter.containsKey(topic.getName())) {
                 topicCounter.put(topic.getName(), topicCounter.get(topic.getName()) + 1);
             } else {
