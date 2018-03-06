@@ -2,10 +2,9 @@ package uk.co.seyah.tweetglobebackend.model.graph.object;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.neo4j.ogm.annotation.*;
-import uk.co.seyah.tweetglobebackend.model.user.User;
 
 @NodeEntity
-public class Score {
+class Score {
 
     @Id
     @GeneratedValue

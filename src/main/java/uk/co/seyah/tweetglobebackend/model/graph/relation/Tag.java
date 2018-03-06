@@ -5,9 +5,10 @@ import uk.co.seyah.tweetglobebackend.model.graph.object.Hashtag;
 import uk.co.seyah.tweetglobebackend.model.graph.object.Tweet;
 
 @RelationshipEntity(type = "Tag")
-public class Tag {
+class Tag {
 
-    @GraphId
+    @Id
+    @GeneratedValue
     private Long graphId;
 
     @StartNode

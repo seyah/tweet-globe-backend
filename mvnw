@@ -183,7 +183,7 @@ find_maven_basedir() {
     if [ -d "${wdir}" ]; then
       wdir=`cd "$wdir/.."; pwd`
     fi
-    # end of workaround
+    # hashtag of workaround
   done
   echo "${basedir}"
 }

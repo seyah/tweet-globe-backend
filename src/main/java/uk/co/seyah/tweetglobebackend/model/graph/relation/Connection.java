@@ -1,15 +1,13 @@
 package uk.co.seyah.tweetglobebackend.model.graph.relation;
 
-import org.neo4j.ogm.annotation.EndNode;
-import org.neo4j.ogm.annotation.GraphId;
-import org.neo4j.ogm.annotation.RelationshipEntity;
-import org.neo4j.ogm.annotation.StartNode;
+import org.neo4j.ogm.annotation.*;
 import uk.co.seyah.tweetglobebackend.model.graph.object.Hashtag;
-import uk.co.seyah.tweetglobebackend.model.graph.object.Tweet;
 
 @RelationshipEntity(type = "Connection")
 public class Connection {
 
+    @Id
+    @GeneratedValue
     private Long graphId;
 
     @StartNode
@@ -18,6 +16,7 @@ public class Connection {
     @EndNode
     private Hashtag end;
 
+    @Property
     private long count;
 
     public Connection() {

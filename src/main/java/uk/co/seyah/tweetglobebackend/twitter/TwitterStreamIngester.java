@@ -16,8 +16,7 @@ import java.util.concurrent.BlockingQueue;
 @Service
 public class TwitterStreamIngester implements StreamListener {
 
-    @Autowired
-    private Twitter twitter;
+    private final Twitter twitter;
 
     @Autowired
     private ThreadPoolTaskExecutor taskExecutor;
@@ -28,9 +27,14 @@ public class TwitterStreamIngester implements StreamListener {
     @Value("${taskExecutor.enabled}")
     private boolean isEnabled;
 
-    private BlockingQueue<Tweet> queue = new ArrayBlockingQueue<>(100);
+    private final BlockingQueue<Tweet> queue = new ArrayBlockingQueue<>(100);
 
-    public void run() {
+    @Autowired
+    public TwitterStreamIngester(Twitter twitter) {
+        this.twitter = twitter;
+    }
+
+    private void run() {
         if(isEnabled) {
             List<StreamListener> listeners = new ArrayList<>();
             listeners.add(this);
@@ -39,7 +43,7 @@ public class TwitterStreamIngester implements StreamListener {
     }
 
     @PostConstruct
-    public void afterPropertiesSet() throws Exception {
+    public void afterPropertiesSet() {
         for (int i = 0; i < taskExecutor.getMaxPoolSize(); i++) {
             taskExecutor.execute(new TweetProcessor(graphService, queue));
         }

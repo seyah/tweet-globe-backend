@@ -20,16 +20,21 @@ import uk.co.seyah.tweetglobebackend.jwt.security.JwtAuthenticationProvider;
 import uk.co.seyah.tweetglobebackend.jwt.security.JwtAuthenticationSuccessHandler;
 import uk.co.seyah.tweetglobebackend.jwt.security.JwtAuthenticationTokenFilter;
 import java.util.Arrays;
+import java.util.Collections;
 
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
-    @Autowired
-    private JwtAuthenticationEntryPoint unauthorizedHandler;
+    private final JwtAuthenticationEntryPoint unauthorizedHandler;
 
     @Autowired
     private JwtAuthenticationProvider authenticationProvider;
+
+    @Autowired
+    public SecurityConfig(JwtAuthenticationEntryPoint unauthorizedHandler) {
+        this.unauthorizedHandler = unauthorizedHandler;
+    }
 
     @Bean
     public PasswordEncoder passwordEncoder(){
@@ -37,9 +42,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     }
 
     @Override
-    public AuthenticationManager authenticationManager() throws Exception {
+    public AuthenticationManager authenticationManager() {
 
-        return new ProviderManager(Arrays.asList(authenticationProvider));
+        return new ProviderManager(Collections.singletonList(authenticationProvider));
     }
 
     @Bean
@@ -75,7 +80,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
         final CorsConfiguration configuration = new CorsConfiguration();
-        configuration.setAllowedOrigins(Arrays.asList("*"));
+        configuration.setAllowedOrigins(Collections.singletonList("*"));
         configuration.setAllowedMethods(Arrays.asList("HEAD",
                 "GET", "POST", "PUT", "DELETE", "PATCH"));
         // setAllowCredentials(true) is important, otherwise:

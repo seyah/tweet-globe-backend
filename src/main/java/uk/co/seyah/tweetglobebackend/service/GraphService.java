@@ -4,14 +4,18 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import uk.co.seyah.tweetglobebackend.model.graph.object.Hashtag;
 import uk.co.seyah.tweetglobebackend.model.graph.object.Tweet;
-import uk.co.seyah.tweetglobebackend.model.graph.relation.Connection;
+import uk.co.seyah.tweetglobebackend.model.graph.object.User;
+import uk.co.seyah.tweetglobebackend.model.graph.relation.UserBias;
+import uk.co.seyah.tweetglobebackend.repository.IHashtagRepository;
+import uk.co.seyah.tweetglobebackend.repository.ITweetRepository;
+import uk.co.seyah.tweetglobebackend.repository.IUserRepository;
 
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 @Service
 public class GraphService {
+
+    private final IUserRepository userRepository;
 
     @Autowired
     private ITweetRepository tweetRepository;
@@ -19,38 +23,46 @@ public class GraphService {
     @Autowired
     private IHashtagRepository hashtagRepository;
 
-    public Tweet addTweet(Tweet tweet) {
-        return tweetRepository.save(obfuscateTweet(tweet));
+    @Autowired
+    public GraphService(IUserRepository userRepository) {
+        this.userRepository = userRepository;
     }
 
-    private Tweet obfuscateTweet(Tweet tweet) {
-        String text = tweet.getText();
-        text = text.replaceAll("@\\w+", "USERNAME");
-        tweet.setText(text);
-        return tweet;
+    public User addUserBias(User user, UserBias userBias) {
+        if(user.getUserRatings() == null) {
+            user.setUserRatings(new ArrayList<>());
+        }
+        user.getUserRatings().add(userBias);
+        return userRepository.save(user);
+    }
+
+    public void addTweet(Tweet tweet) {
+        tweetRepository.save(tweet);
     }
 
     public Hashtag createOrAddHashtag(Hashtag hashtag) {
         Hashtag h = hashtagRepository.findOneByWord(hashtag.getWord());
-        if(h == null) {
+        if (h == null) {
             return hashtagRepository.save(hashtag);
         } else {
+            h.setCount(h.getCount() + 1);
+            hashtagRepository.save(h);
             return h;
         }
     }
 
-    public Tweet connectTweetWithHashtag(Tweet tweet, Hashtag hashtag) {
-        tweet.addHashtag(hashtag);
-        return tweetRepository.save(tweet);
-    }
-
     public void connectHashtagsWithHashtags(Set<Hashtag> ends) {
-        for (Hashtag start : ends) {
-            for(Hashtag end : ends) {
-                if(!start.getGraphId().equals(end.getGraphId())) {
-                    start.addConnection(end);
+        Set<Hashtag> fill = new HashSet<>(ends);
+        Iterator<Hashtag> iter = fill.iterator();
+        while(iter.hasNext()) {
+            Hashtag start = iter.next();
+            start.setConnections(new HashSet<>(hashtagRepository.findConnections(start.getWord())));
+            for (Hashtag end : fill) {
+                if (!start.getWord().equals(end.getWord())) {
+                    start.addConnection(end, true);
                 }
             }
+            iter.remove();
             hashtagRepository.save(start);
         }
     }

@@ -1,5 +1,6 @@
 package uk.co.seyah.tweetglobebackend.model.graph.object;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.neo4j.ogm.annotation.*;
 
 import java.util.HashSet;
@@ -13,6 +14,7 @@ public class Tweet {
     private Long graphId;
 
     @Relationship(type = "Tag")
+    @JsonIgnore
     private Set<Hashtag> hashtags;
 
     private String lang;
@@ -22,6 +24,9 @@ public class Tweet {
     private boolean isRetweeted;
     private Long creationDate;
     private String location;
+
+    private String sentiment = "";
+    private String topic = "";
 
     public Tweet() {
     }
@@ -41,7 +46,7 @@ public class Tweet {
         this.text = text;
     }
 
-    public Tweet(String lang, String text, int favouriteCount, int retweetCount, boolean isRetweeted, Long creationDate, String location) {
+    private Tweet(String lang, String text, int favouriteCount, int retweetCount, boolean isRetweeted, Long creationDate, String location) {
         this.lang = lang;
         this.text = text;
         this.favouriteCount = favouriteCount;
@@ -128,5 +133,21 @@ public class Tweet {
 
     public void setLocation(String location) {
         this.location = location;
+    }
+
+    public String getSentiment() {
+        return sentiment;
+    }
+
+    public void setSentiment(String sentiment) {
+        this.sentiment = sentiment;
+    }
+
+    public String getTopic() {
+        return topic;
+    }
+
+    public void setTopic(String topic) {
+        this.topic = topic;
     }
 }

@@ -9,7 +9,7 @@ import org.springframework.security.core.authority.AuthorityUtils;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 import uk.co.seyah.tweetglobebackend.jwt.JwtAuthenticationToken;
-import uk.co.seyah.tweetglobebackend.model.user.User;
+import uk.co.seyah.tweetglobebackend.model.graph.object.User;
 import uk.co.seyah.tweetglobebackend.jwt.JwtUserDto;
 import uk.co.seyah.tweetglobebackend.jwt.exception.JwtTokenMalformedException;
 import uk.co.seyah.tweetglobebackend.service.CustomUserDetailsService;
@@ -19,11 +19,15 @@ import java.util.List;
 @Component
 public class JwtAuthenticationProvider extends AbstractUserDetailsAuthenticationProvider {
 
-    @Autowired
-    private CustomUserDetailsService customUserDetailsService;
+    private final CustomUserDetailsService customUserDetailsService;
 
     @Autowired
     private JwtTokenValidator jwtTokenValidator;
+
+    @Autowired
+    public JwtAuthenticationProvider(CustomUserDetailsService customUserDetailsService) {
+        this.customUserDetailsService = customUserDetailsService;
+    }
 
     @Override
     public boolean supports(Class<?> authentication) {
